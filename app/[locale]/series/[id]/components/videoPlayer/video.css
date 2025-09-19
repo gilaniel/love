@@ -1,0 +1,94 @@
+.video-player {
+  position: relative;
+}
+
+.video-player video {
+  width: auto;
+  height: calc(100dvh - 80px);
+}
+
+.video-player.inactive .controls {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.controls {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  transition: opacity .4s ease, visibility .4s ease;
+}
+
+.controls button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.progress-container {
+  height: 4px;
+  cursor: pointer;
+  flex-grow: 1;
+}
+
+.progress-bar {
+  height: 100%;
+}
+
+.progress-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 1;
+  transition: opacity 0.2s;
+}
+
+.progress-container:hover .progress-thumb,
+.progress-container:active .progress-thumb {
+  opacity: 1;
+}
+
+.volume-slider {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.volume-slider::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 100%;
+  bottom: -6px;
+  height: 20px;
+
+}
+
+@media (hover: hover) {
+  .volume-control:hover .volume-slider {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.episodes-slider .swiper-wrapper,
+.episodes-slider .swiper-slide {
+  padding-bottom: 5px;
+}
+
+.clamp-lines {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}

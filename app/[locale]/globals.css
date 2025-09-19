@@ -1,0 +1,318 @@
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+
+@theme {
+  --font-mono: var(--font-mono);
+}
+
+:root {
+  --background: #000;
+  --white: #fff;
+  --gradient: linear-gradient(90deg, #ff0080 0%, #ffbb01 100%);
+  --gradient-reverse: linear-gradient(90deg, #ffbb01 0%, #ff0080 100%);
+  --gradient-v: linear-gradient(180deg, #ff0080 0%, #ffbb01 100%);
+  --grey: #2a2a2a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-white: var(--white);
+  --color-grey: var(--grey);
+  --color-gradient-reverse: var(--gradient-reverse);
+  --color-gradient-v:: var(--gradient-v:);
+}
+
+@layer base {
+  body {
+    @apply bg-background text-white text-[16px];
+    letter-spacing: 0.02em;
+    font-family: var(--font-mono);
+  }
+}
+
+.subtitle {
+  @apply font-[700] text-[18px];
+}
+
+.title {
+  @apply text-[30px] lg:text-[48px] leading-[120%] text-center;
+}
+
+.main-link {
+  background: #fff;
+  font-weight: 500;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  cursor: pointer;
+}
+
+.main-link:hover {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-link {
+  background: var(--gradient);
+  font-weight: 600;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: opacity .3s ease;
+}
+
+.gradient-link:hover {
+  opacity: 0.8;
+}
+
+.gradient-btn {
+  background: var(--gradient);
+  position: relative;
+  overflow: hidden;
+}
+
+.gradient-btn img, .gradient-btn span {
+  position: relative;
+  z-index: 3;
+}
+
+.gradient-btn::after, .gradient-btn::before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background: var(--gradient-reverse);
+  transition: opacity .4s ease;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+}
+
+.gradient-btn::before {
+  background: #ff0080;
+  z-index: 2;
+}
+
+.gradient-btn:hover::after {
+  opacity: 1;
+}
+
+.gradient-btn:active::before {
+  opacity: 1;
+}
+
+.gradient-btn .black-btn-bg {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  background: #000;
+  z-index: 1;
+  border-radius: 28px;
+}
+
+.gradient-black-btn::after,
+.gradient-circle-btn:after {
+  background: var(--gradient);
+}
+
+
+ul li {
+  @apply py-1;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  @apply font-[500] tracking-[0.04em];
+}
+
+.swiper {
+  @apply w-full;
+}
+
+
+.popular-slider .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative !important;
+  width: auto !important;
+  height: unset !important;
+}
+.popular-slider .swiper-wrapper {
+  align-items: flex-start ;
+}
+
+.custom-slide.swiper-slide {
+  position: relative;
+  width: 350px;
+  opacity: .7;
+  transform: scale(.9);
+  transition: all .6s ease-in-out;
+}
+
+.custom-slide img {
+  width: 100%;
+}
+
+.custom-slider .custom-slide.swiper-slide {
+  transform: scale(.9) translateZ(0);
+}
+
+.custom-slide.swiper-slide.swiper-slide-active {  
+  transform: scale(1) !important;
+  opacity: 1 !important;
+}
+
+.custom-slider .custom-slide.swiper-slide.swiper-slide-active {
+  transform: scale(1) translateZ(0) !important;
+}
+
+@media only screen and (max-width: 768px) {
+  .custom-slide.swiper-slide {
+    width: 250px;
+  }
+}
+       
+
+.swiper-pagination {
+  @apply flex gap-2 absolute w-full z-[2] justify-center translate-y-[-40px];
+}
+
+.swiper-pagination-bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 100%;
+  overflow: hidden;
+  will-change: width;
+  transition: width .2s ease-in-out;
+}
+
+.swiper-pagination-bullet::before {
+  content: '';
+  width: 100%;
+  height: 100%;
+  background: #928984;
+  display: block;
+}
+
+.swiper-pagination-bullet-active {
+  width: 12px;
+  border-radius: 3px !important;
+  /* background: linear-gradient(90deg, #ff0080 0%, #ffbb01 100%); */
+}
+
+.swiper-pagination-bullet-active::before {
+  background: linear-gradient(90deg, #ff0080 0%, #ffbb01 100%);
+}
+
+.gradient-black-btn,
+.gradient-circle-btn {
+  background: var(--gradient-reverse);
+  transition: border .2s ease;
+}
+
+.gradient-circle-btn {
+  @apply p-0 rounded-full;
+}
+
+.gradient-circle-btn img {
+  @apply w-[24px] h-[24px];
+}
+
+
+.popular-fade {
+  height: 100%;
+  width: 160px;
+  background: linear-gradient(270deg, #000 50%, rgba(0, 0, 0, 0) 100%);
+}
+
+.popular-fade-m {
+  background: linear-gradient(270deg, #000 30%, rgba(0, 0, 0, 0) 100%);
+}
+
+@keyframes accordion-up {
+  from {
+    height: var(--radix-accordion-content-height)
+  }
+
+  to {
+    height: 0
+  }
+}
+
+.data-\[state\=closed\]\:animate-accordion-up[data-state=closed] {
+  animation: accordion-up .2s ease-out
+}
+
+@keyframes accordion-down {
+  from {
+    height: 0
+  }
+
+  to {
+    height: var(--radix-accordion-content-height)
+  }
+}
+
+.data-\[state\=open\]\:animate-accordion-down[data-state=open] {
+  animation: accordion-down .2s ease-out
+}
+
+.accordion-trigger div {
+  @apply flex items-center justify-center;
+}
+
+.accordion-trigger[data-state=closed] .accordion-open {
+  display: none;
+}
+
+.accordion-trigger[data-state=open] .accordion-close {
+  display: none;
+}
+
+.accordion-trigger[data-state=closed] .gradient-circle-btn {
+
+  background: linear-gradient(#000, #000) padding-box, linear-gradient(90deg, #464646 0%, #424242 100%) border-box;
+}
+
+.episodes-tab {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  @apply bg-white/60 font-[600];
+
+}
+
+.episodes-tab.active {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.episodes-slider .swiper-slide {
+  width: inherit!important;
+}
+
+.more-desc-btn {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.popular-slider .swiper-wrapper {
+  @apply min-[1780px]:justify-center;
+}
+
+.swiper-button-disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.main-page-nav {
+  opacity: 0;
+}
+
