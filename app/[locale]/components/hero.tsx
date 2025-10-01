@@ -86,7 +86,7 @@ export const Hero = ({
             return (
               <SwiperSlide key={i} className="custom-slide">
                 <NavigationLink
-                  href={`/series/${brand?.id}`}
+                  href={`/${locale}/series/${brand?.id}`}
                   className="flex flex-col gap-3 text-center"
                 >
                   <FadeImg

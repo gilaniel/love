@@ -109,7 +109,7 @@ export const Categories = ({
                 return (
                   <SwiperSlide key={item.id}>
                     <NavigationLink
-                      href={`/series/${item.id}`}
+                      href={`/${locale}/series/${item.id}`}
                       className="flex flex-col w-[168px] xl:w-[188px] gap-3"
                     >
                       <div className="relative rounded-[12px] overflow-hidden">
