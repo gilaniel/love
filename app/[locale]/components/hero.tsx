@@ -90,7 +90,7 @@ export const Hero = ({
                   className="flex flex-col gap-3 text-center"
                 >
                   <FadeImg
-                    src={item.l10n[locale]?.thumbnail || "-"}
+                    src={brand?.l10n[locale]?.thumbnail || "-"}
                     // src={"/series/0/poster.webp"}
                     alt={brand?.l10n[locale]?.name || "-"}
                     quality={100}
