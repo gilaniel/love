@@ -6,7 +6,6 @@ const i18nConfig: Config = {
   localeDetector: () => {
     return "en";
   },
-  prefixDefault: true,
 };
 
 export default i18nConfig;
