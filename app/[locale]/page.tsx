@@ -27,7 +27,7 @@ export default async function Home({
   return (
     <ServerIntlProvider messages={messages} locale={locale}>
       <main className="" data-anchor="home">
-        <Hero series={series} locale={locale as Locale} />
+        <Hero series={series} tags={tags} locale={locale as Locale} />
         <GetApp />
         <Suspense>
           <Categories series={series} tags={tags} locale={locale as Locale} />

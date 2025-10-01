@@ -24,6 +24,7 @@ export type SeriesItem = {
     name: string;
   }[];
   weight: number | string;
+  sort_number: number;
 };
 
 export type SeriesMeta = {

@@ -1,10 +1,10 @@
 "use client";
 
 import { FadeImg } from "@/components/ui/fade-img";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/navigation";
-import { Locale, SeriesItem } from "@/types/model";
+import { Locale, SeriesItem, TagItem } from "@/types/model";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -14,13 +14,25 @@ import { NavigationLink } from "@/components/NavigationLink";
 
 export const Hero = ({
   series,
+  tags,
   locale,
 }: {
   series: SeriesItem[];
+  tags: TagItem[];
   locale: Locale;
 }) => {
   const [isInit, setInit] = useState(false);
   const [isHiddenNext, setHiddenNext] = useState(true);
+
+  const promoTags = tags.find((tag) => tag.name === "Promo");
+
+  const seriesMap = useMemo(() => {
+    const map = new Map<number, SeriesItem>();
+    series.forEach((s) => {
+      map.set(Number(s.id), s);
+    });
+    return map;
+  }, [series]);
 
   useEffect(() => {
     setTimeout(() => setHiddenNext(false), 50);
@@ -53,7 +65,7 @@ export const Hero = ({
           centeredSlides={true}
           loop={true}
           className="custom-slider"
-          speed={600}
+          speed={400}
           slidesPerGroup={1}
           shortSwipes={true}
           watchSlidesProgress={true}
@@ -68,26 +80,30 @@ export const Hero = ({
             nextEl: ".next-slide-m ",
           }}
         >
-          {series.concat(series).map((item, i) => (
-            <SwiperSlide key={i} className="custom-slide">
-              <NavigationLink
-                href={`/series/${item.id}`}
-                className="flex flex-col gap-3 text-center"
-              >
-                <FadeImg
-                  src={item.l10n[locale]?.thumbnail || "-"}
-                  // src={"/series/0/poster.webp"}
-                  alt={item.l10n[locale]?.name || "-"}
-                  quality={100}
-                  width={188}
-                  height={265}
-                  className="overflow-hidden rounded-[12px] min-h-[265px]"
-                />
+          {promoTags?.brands.concat(promoTags.brands).map((item, i) => {
+            const brand = seriesMap.get(Number(item.id));
 
-                <p>{item.l10n[locale]?.name || "-"}</p>
-              </NavigationLink>
-            </SwiperSlide>
-          ))}
+            return (
+              <SwiperSlide key={i} className="custom-slide">
+                <NavigationLink
+                  href={`/series/${brand?.id}`}
+                  className="flex flex-col gap-3 text-center"
+                >
+                  <FadeImg
+                    src={item.l10n[locale]?.thumbnail || "-"}
+                    // src={"/series/0/poster.webp"}
+                    alt={brand?.l10n[locale]?.name || "-"}
+                    quality={100}
+                    width={188}
+                    height={265}
+                    className="overflow-hidden rounded-[12px] min-h-[265px]"
+                  />
+
+                  <p>{brand?.l10n[locale]?.name || "-"}</p>
+                </NavigationLink>
+              </SwiperSlide>
+            );
+          })}
         </Swiper>
 
         <div className={isHiddenNext ? "hidden" : "hidden lg:block"}>

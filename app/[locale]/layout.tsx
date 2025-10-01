@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
   description: "Love the drama? You need The LoveDrama app!",
   icons: {
-    icon: "/icon.svg",
+    icon: "/favicon.svg",
   },
 };
 

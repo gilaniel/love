@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "lucide-react";
+import { Icon } from "@/components/ui/icon";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -30,7 +30,9 @@ export const Description = ({ text }: { text: string }) => {
         <div className="flex gap-3 items-center">
           <p className="text-[22px]">Description</p>
 
-          <Link className="size-5 cursor-pointer" onClick={copyToClipboard} />
+          <div className="cursor-pointer" onClick={copyToClipboard}>
+            <Icon url={`/icons/share.svg`} alt="Share" />
+          </div>
         </div>
 
         <p className={`${isMore ? "" : "line-clamp-[3]"} mt-6 lg:mt-0`}>
@@ -39,7 +41,7 @@ export const Description = ({ text }: { text: string }) => {
       </div>
 
       <div
-        className="hidden lg:flex items-center gap-2"
+        className="hidden lg:flex items-center gap-2 cursor-pointer"
         onClick={() => setMore((prev) => !prev)}
       >
         {!isMore && <p className="more-desc-btn">More</p>}

@@ -32,7 +32,7 @@ export const Categories = ({
     const newReleases = tags.find((tag) => tag.name === "New releases");
 
     const others = tags.filter(
-      (tag) => !["Most trending", "New releases"].includes(tag.name)
+      (tag) => !["Most trending", "New releases", "Promo"].includes(tag.name)
     );
 
     const reorderedTags =
@@ -110,7 +110,7 @@ export const Categories = ({
                   <SwiperSlide key={item.id}>
                     <NavigationLink
                       href={`/series/${item.id}`}
-                      className="flex flex-col w-[188px] gap-3"
+                      className="flex flex-col w-[168px] xl:w-[188px] gap-3"
                     >
                       <div className="relative rounded-[12px] overflow-hidden">
                         <FadeImg
@@ -120,7 +120,7 @@ export const Categories = ({
                           quality={100}
                           width={188}
                           height={265}
-                          className="overflow-hidden rounded-[12px] min-h-[265px]"
+                          className="overflow-hidden rounded-[12px] min-h-[245px] xl:min-h-[265px]"
                         />
 
                         {tag.name === "Most trending" && (

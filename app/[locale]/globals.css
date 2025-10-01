@@ -152,7 +152,7 @@ h4 {
   width: 350px;
   opacity: .7;
   transform: scale(.9);
-  transition: all .6s ease-in-out;
+  transition: all .4s ease-in-out;
 }
 
 .custom-slide img {
