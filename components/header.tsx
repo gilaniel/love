@@ -70,7 +70,7 @@ export const Header = () => {
         isScrolled ? "bg-[#ffffff03] backdrop-blur-[4px]" : ""
       )}
     >
-      <Link href="/" className="flex-1 text-left">
+      <Link href={`/${currentLocale}`} className="flex-1 text-left">
         <FadeImg
           src="/logo.svg"
           width={164}
