@@ -49,7 +49,7 @@ export const Info = ({
         {!!meta.tags.length && (
           <div className="flex gap-2 flex-wrap">
             {meta.tags.map((tag, i) => (
-              <Link href={`/en/?category=${tag.id}`} key={i}>
+              <Link href={`/?category=${tag.id}`} key={i}>
                 <Tag v={tag.name} />
               </Link>
             ))}
