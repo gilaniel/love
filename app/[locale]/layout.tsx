@@ -5,6 +5,9 @@ import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import "swiper/css";
 import i18nConfig from "@/i18nConfig";
+import { Toaster } from "@/components/ui/sonner";
+import { NavigationProvider } from "@/providers/NavigationProviders";
+import { GlobalNavigationLoader } from "@/components/GlobalNavigationLoader";
 
 const montserrat = Montserrat({
   variable: "--font-mono",
@@ -38,9 +41,13 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className={`${montserrat.variable} antialiased`}>
-        <Header />
-        {children}
-        <Footer />
+        <NavigationProvider>
+          <Header />
+          {children}
+          <GlobalNavigationLoader />
+          <Toaster />
+          <Footer />
+        </NavigationProvider>
       </body>
     </html>
   );

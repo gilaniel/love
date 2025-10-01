@@ -13,15 +13,16 @@ const COUNTS_PER_PAGE = 20;
 export const Episodes = ({
   data,
   onEpisodeClick,
+  currentEpisode,
 }: {
   data: ContentItem[];
-  onEpisodeClick?: (link?: string) => void;
+  onEpisodeClick?: (link?: string, episode?: number) => void;
+  currentEpisode: number;
 }) => {
   const total = data.length;
   const pages = Math.ceil(total / COUNTS_PER_PAGE);
   const [firstSwiper, setFirstSwiper] = useState<SwiperClass | null>(null);
   const [index, setIndex] = useState(0);
-  const [currentEpisode, setEpisode] = useState(0);
 
   return (
     <div className="flex flex-col gap-6">
@@ -69,11 +70,10 @@ export const Episodes = ({
                     )}
                     onClick={() => {
                       if (onEpisodeClick) {
-                        onEpisodeClick(data[i].is_open ? data[i].cf_link : "");
-
-                        if (data[i].is_open) {
-                          setEpisode(i);
-                        }
+                        onEpisodeClick(
+                          !data[i].price ? data[i].cf_link : "",
+                          i
+                        );
 
                         return;
                       }
@@ -87,7 +87,7 @@ export const Episodes = ({
                           : "#191919",
                     }}
                   >
-                    {!data[i].is_open && (
+                    {!!data[i + COUNTS_PER_PAGE * page].price && (
                       <Icon
                         url="/icons/lock.svg"
                         alt="1"

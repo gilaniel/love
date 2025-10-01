@@ -5,6 +5,7 @@ export type SeriesItem = {
   banner: string;
   poster: string;
   title: string;
+  name: string;
   subtitle: string;
   description: string;
   genre: string[];
@@ -22,6 +23,7 @@ export type SeriesItem = {
     weight: number;
     name: string;
   }[];
+  weight: number | string;
 };
 
 export type SeriesMeta = {
@@ -53,4 +55,20 @@ export type ContentItem = {
   is_reloading: false;
   track_langs: string[];
   subs_langs: string[];
+};
+
+export type TagItem = {
+  name: string;
+  weight: number;
+  id: number;
+  brands: SeriesItem[];
+  l10n: {
+    en: TagMeta;
+    es: TagMeta;
+    pt: TagMeta;
+  };
+};
+
+export type TagMeta = {
+  name: string;
 };

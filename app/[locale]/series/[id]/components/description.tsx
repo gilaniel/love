@@ -1,9 +1,21 @@
 "use client";
 
+import { Link } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export const Description = ({ text }: { text: string }) => {
   const [isMore, setMore] = useState(false);
+
+  async function copyToClipboard() {
+    const text = window.location.href;
+    try {
+      await navigator.clipboard.writeText(text);
+      toast("Copied");
+    } catch (err) {
+      console.error("Ошибка при копировании: ", err);
+    }
+  }
 
   return (
     <>
@@ -15,7 +27,12 @@ export const Description = ({ text }: { text: string }) => {
       </div>
 
       <div className="flex flex-col gap-5">
-        <p className="text-[22px]">Description</p>
+        <div className="flex gap-3 items-center">
+          <p className="text-[22px]">Description</p>
+
+          <Link className="size-5 cursor-pointer" onClick={copyToClipboard} />
+        </div>
+
         <p className={`${isMore ? "" : "line-clamp-[3]"} mt-6 lg:mt-0`}>
           {text}
         </p>

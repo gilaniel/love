@@ -11,6 +11,7 @@ import { ContentItem, Locale, SeriesItem } from "@/types/model";
 import { Description } from "./description";
 
 import { scrollTo } from "@/lib/utils";
+import Link from "next/link";
 
 export const Info = ({
   data,
@@ -19,13 +20,15 @@ export const Info = ({
   locale,
   count,
   onEpisodeClick,
+  currentEpisode,
 }: {
   data: ContentItem[];
   meta: SeriesItem;
   isPlaying: boolean;
   locale: Locale;
   count: number;
-  onEpisodeClick?: (link?: string) => void;
+  onEpisodeClick?: (link?: string, episode?: number) => void;
+  currentEpisode: number;
 }) => {
   return (
     <motion.div
@@ -46,7 +49,9 @@ export const Info = ({
         {!!meta.tags.length && (
           <div className="flex gap-2 flex-wrap">
             {meta.tags.map((tag, i) => (
-              <Tag v={tag.name} key={i} />
+              <Link href={`/en/?category=${tag.id}`} key={i}>
+                <Tag v={tag.name} />
+              </Link>
             ))}
           </div>
         )}
@@ -67,7 +72,11 @@ export const Info = ({
               <span>Download app</span>
             </Button>
           </div>
-          <Episodes data={data} onEpisodeClick={onEpisodeClick} />
+          <Episodes
+            data={data}
+            onEpisodeClick={onEpisodeClick}
+            currentEpisode={currentEpisode}
+          />
         </div>
       </div>
 

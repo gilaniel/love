@@ -1,7 +1,6 @@
 "use client";
 
 import { FadeImg } from "@/components/ui/fade-img";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/navigation";
@@ -11,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Navigation, Autoplay } from "swiper/modules";
+import { NavigationLink } from "@/components/NavigationLink";
 
 export const Hero = ({
   series,
@@ -55,10 +55,10 @@ export const Hero = ({
           className="custom-slider"
           speed={600}
           slidesPerGroup={1}
-          shortSwipes={true} // ← Разрешить короткие свайпы (даже маленькие движения)
-          watchSlidesProgress={true} // ← Помогает точнее отслеживать движение
-          resistance={true} // ← Можно оставить, чтобы не "вылетало" за границы
-          resistanceRatio={0.85} //
+          shortSwipes={true}
+          watchSlidesProgress={true}
+          resistance={true}
+          resistanceRatio={0.85}
           onSwiper={() => {
             setInit(true);
           }}
@@ -70,12 +70,13 @@ export const Hero = ({
         >
           {series.concat(series).map((item, i) => (
             <SwiperSlide key={i} className="custom-slide">
-              <Link
+              <NavigationLink
                 href={`/series/${item.id}`}
                 className="flex flex-col gap-3 text-center"
               >
                 <FadeImg
-                  src={item.l10n[locale]?.thumbnail || ""}
+                  src={item.l10n[locale]?.thumbnail || "-"}
+                  // src={"/series/0/poster.webp"}
                   alt={item.l10n[locale]?.name || "-"}
                   quality={100}
                   width={188}
@@ -84,7 +85,7 @@ export const Hero = ({
                 />
 
                 <p>{item.l10n[locale]?.name || "-"}</p>
-              </Link>
+              </NavigationLink>
             </SwiperSlide>
           ))}
         </Swiper>

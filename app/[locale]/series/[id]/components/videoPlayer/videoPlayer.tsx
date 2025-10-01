@@ -39,6 +39,7 @@ const VideoPlayer = ({ data, meta, locale, count }: VideoPlayerProps) => {
   const [isStarted, setStarted] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [isIdle, setIsIdle] = useState(true);
+  const [currentEpisode, setEpisode] = useState(0);
 
   const [link, setLink] = useState(data[0].cf_link);
 
@@ -96,11 +97,15 @@ const VideoPlayer = ({ data, meta, locale, count }: VideoPlayerProps) => {
     return `${minutes}:${seconds.toString().padStart(2, "0")}`;
   };
 
-  const toggleFullscreen = () => {
+  const toggleFullscreen = (exit?: boolean) => {
     if (playerWrapRef.current && videoRef.current && playerRef.current) {
       if (document.fullscreenElement) {
+        playerWrapRef.current.classList.remove("full");
         document.exitFullscreen();
       } else {
+        if (exit) return;
+
+        playerWrapRef.current.classList.add("full");
         playerWrapRef.current.requestFullscreen();
 
         videoRef.current!.style.height = "100vh";
@@ -112,7 +117,7 @@ const VideoPlayer = ({ data, meta, locale, count }: VideoPlayerProps) => {
 
   const handleScreenChange = () => {
     if (!document.fullscreenElement && videoRef.current) {
-      videoRef.current.style.height = "calc(100vh - 80px)";
+      videoRef.current.style.height = "";
       playerRef.current!.style.maxHeight = "";
       setFullScreen(false);
     }
@@ -231,7 +236,7 @@ const VideoPlayer = ({ data, meta, locale, count }: VideoPlayerProps) => {
         className="flex flex-grow justify-center "
       >
         <div
-          className={`video-player overflow-hidden max-w-[486px] max-h-[80dvh] lg:max-h-full ${
+          className={`video-player overflow-hidden max-w-[486px] max-h-[60dvh] md:max-h-[80dvh] lg:max-h-full ${
             (!isActive && isPlaying) || (isIdle && isPlaying) || !isStarted
               ? "inactive"
               : ""
@@ -242,7 +247,23 @@ const VideoPlayer = ({ data, meta, locale, count }: VideoPlayerProps) => {
             ref={videoRef}
             onTimeUpdate={handleTimeUpdate}
             onMouseDown={togglePlay}
-            onEnded={togglePlay}
+            onEnded={() => {
+              togglePlay();
+
+              if (data[currentEpisode + 1].price) {
+                setShowEpisodes(false);
+                toggleFullscreen(true);
+
+                setTimeout(() => {
+                  scrollTo("app");
+                }, 100);
+                return;
+              }
+
+              setLoading(true);
+              setEpisode(currentEpisode + 1);
+              setLink(data[currentEpisode + 1].cf_link);
+            }}
             className="h-full lg:h-auto"
             onWaiting={() => setLoading(true)}
             onPlaying={() => setLoading(false)}
@@ -250,10 +271,12 @@ const VideoPlayer = ({ data, meta, locale, count }: VideoPlayerProps) => {
           />
 
           <div className="controls pt-[10px] pb-[6px] px-4 lg:px-0">
-            {!isLoading && (
+            {(!isLoading || isPlaying) && (
               <>
-                <div
-                  className="progress-container absolute  w-full left-0 top-[-4px] bg-white/50"
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="progress-container absolute  w-full left-0 top-[-11px] flex items-center"
                   ref={progressBarRef}
                   onClick={handleProgressClick}
                   onMouseDown={(e) => {
@@ -275,9 +298,13 @@ const VideoPlayer = ({ data, meta, locale, count }: VideoPlayerProps) => {
                       left: `${progress}%`,
                     }}
                   />
-                </div>
+                </motion.div>
 
-                <div className="flex justify-between w-full items-center">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex justify-between w-full items-center"
+                >
                   <button onClick={togglePlay}>
                     <Icon
                       url={`/icons/${isPlaying ? "pause" : "play"}.svg`}
@@ -317,14 +344,14 @@ const VideoPlayer = ({ data, meta, locale, count }: VideoPlayerProps) => {
                         />
                       </div>
                     </div>
-                    <button onClick={toggleFullscreen}>
+                    <button onClick={() => toggleFullscreen()}>
                       <Icon
                         url={`/icons/full${isFullScreen ? "-exit" : ""}.svg`}
                         alt="Fullscreen"
                       />
                     </button>
                   </div>
-                </div>
+                </motion.div>
               </>
             )}
           </div>
@@ -342,7 +369,7 @@ const VideoPlayer = ({ data, meta, locale, count }: VideoPlayerProps) => {
             <Loader2Icon className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-spin text-white w-[35px] h-[35px]" />
           )}
 
-          {isFullScreen && (
+          {isFullScreen && !isLoading && (
             <button
               className="absolute bottom-[60px] right-4"
               onClick={() => setShowEpisodes(true)}
@@ -391,11 +418,16 @@ const VideoPlayer = ({ data, meta, locale, count }: VideoPlayerProps) => {
 
               <Episodes
                 data={data}
-                onEpisodeClick={(link?: string) => {
-                  if (link) {
+                currentEpisode={currentEpisode}
+                onEpisodeClick={(newLink?: string, episode?: number) => {
+                  if (newLink) {
+                    if (link === newLink) return;
+                    setEpisode(episode!);
+                    setShowEpisodes(false);
                     setLoading(true);
-                    togglePlay();
-                    setLink(link);
+                    videoRef.current?.pause();
+                    setIsPlaying(false);
+                    setLink(newLink);
                     return;
                   }
 
@@ -418,11 +450,16 @@ const VideoPlayer = ({ data, meta, locale, count }: VideoPlayerProps) => {
         isPlaying={isPlaying}
         count={count}
         locale={locale}
-        onEpisodeClick={(link?: string) => {
-          if (link) {
+        currentEpisode={currentEpisode}
+        onEpisodeClick={(newLink?: string, episode?: number) => {
+          if (newLink) {
+            if (link === newLink) return;
+            setEpisode(episode!);
+            setShowEpisodes(false);
             setLoading(true);
-            togglePlay();
-            setLink(link);
+            videoRef.current?.pause();
+            setIsPlaying(false);
+            setLink(newLink);
             return;
           }
 

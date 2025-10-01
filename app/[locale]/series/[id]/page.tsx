@@ -5,15 +5,74 @@ import VideoPlayer from "./components/videoPlayer/videoPlayer";
 import Link from "next/link";
 import getIntl from "../../intl";
 import { Locale } from "@/types/model";
+import { Metadata } from "next";
 
 export const revalidate = 604800;
 export const dynamic = "force-static";
 
-const SeriesPage = async ({
+export async function generateStaticParams() {
+  const data = await fetchSeries();
+
+  return data.map((item) => ({
+    slug: item.id,
+  }));
+}
+
+export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: string; locale: string }>;
-}) => {
+  params: Promise<{ id: string; locale: string; ids: number }>;
+}): Promise<Metadata> {
+  const { id, locale: sLocale } = await params;
+
+  const [meta] = await fetchSeries(Number(id));
+
+  const { locale } = await getIntl(sLocale);
+
+  const title = meta?.l10n?.[locale as Locale]?.name
+    ? `${meta.l10n[locale as Locale].name}`
+    : "LoveDrama";
+
+  const description = meta?.l10n?.[locale as Locale]?.description
+    ? meta.l10n[locale as Locale].description
+    : "";
+
+  const posterUrl = meta?.l10n[locale as Locale]?.thumbnail || "";
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "video.tv_show",
+      url: `https://lovedrama.tv/${sLocale}/series/${id}`,
+      images: [
+        {
+          url: posterUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [posterUrl],
+    },
+    alternates: {
+      canonical: `https://lovedrama.tv/${sLocale}/series/${id}`,
+    },
+  };
+}
+
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ id: string; locale: string; ids: number }>;
+}) {
   const { id, locale: sLocale } = await params;
   const [meta] = await fetchSeries(Number(id));
   const data = await fetchContent(Number(id));
@@ -89,6 +148,4 @@ const SeriesPage = async ({
       </section>
     </main>
   );
-};
-
-export default SeriesPage;
+}

@@ -32,13 +32,24 @@
 }
 
 .progress-container {
-  height: 4px;
+  height: 16px;
   cursor: pointer;
   flex-grow: 1;
 }
 
+.progress-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, .5);
+  transform: translateY(-50%);
+}
+
 .progress-bar {
-  height: 100%;
+  height: 4px;
 }
 
 .progress-thumb {
@@ -91,4 +102,15 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
+}
+
+@media only screen and (max-width: 768px) {
+  .video-player video {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.full .video-player {
+  width: 100%;
 }

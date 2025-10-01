@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { FadeImg } from "@/components/ui/fade-img";
 import Link from "next/link";
 
 export const GetApp = () => {
@@ -26,7 +26,7 @@ export const GetApp = () => {
 
         <div className="flex flex-col lg:flex-row items-center gap-6 w-full lg:w-auto">
           <div>
-            <Image
+            <FadeImg
               src="/qr2.svg"
               alt="Get app"
               quality={100}
@@ -42,7 +42,7 @@ export const GetApp = () => {
             >
               <Button className="gradient-black-btn h-[48px] w-full md:w-[200px] rounded-[28px]">
                 <span className="black-btn-bg"></span>
-                <Image
+                <FadeImg
                   src="/icons/apple.svg"
                   alt="App Store"
                   quality={100}
@@ -58,7 +58,7 @@ export const GetApp = () => {
             >
               <Button className="gradient-black-btn h-[48px] w-full md:w-[200px] rounded-[28px]">
                 <span className="black-btn-bg"></span>
-                <Image
+                <FadeImg
                   src="/icons/google.svg"
                   alt="Google play"
                   quality={100}
@@ -72,7 +72,7 @@ export const GetApp = () => {
         </div>
       </div>
 
-      <Image
+      <FadeImg
         src="/phone-l.png"
         alt="Get app"
         quality={100}
@@ -80,7 +80,7 @@ export const GetApp = () => {
         height={608}
         className="absolute right-1/2 top-[110px] translate-x-[-290px] z-[2]"
       />
-      <Image
+      <FadeImg
         src="/phone-r.png"
         alt="Get app"
         quality={100}

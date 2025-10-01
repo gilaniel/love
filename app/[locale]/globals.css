@@ -304,7 +304,7 @@ h4 {
 }
 
 .popular-slider .swiper-wrapper {
-  @apply min-[1780px]:justify-center;
+  @apply min-[1780px]:justify-start;
 }
 
 .swiper-button-disabled {
